@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.controller import survey_controller, question_controller, response_controller
+from app.api import survey_controller, question_controller, response_controller
 from app.database.database import engine
 from app.database.models import models
 
