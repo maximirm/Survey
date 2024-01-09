@@ -4,7 +4,7 @@ from typing import Optional, List
 
 class ResponseBase(BaseModel):
     question_id: UUID4
-    respondent_id: Optional[UUID4]
+    respondent_id: Optional[UUID4] = None
     response_text: List[str]
 
 
