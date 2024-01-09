@@ -11,7 +11,7 @@ class Survey(Base):
     creator_id = Column(UUID(as_uuid=True), nullable=False)
     title = Column(String)
     description = Column(String)
-    questions = relationship("Question", back_populates="survey")
+    questions = relationship("Question", back_populates="survey", cascade="all, delete-orphan")
 
 
 class Question(Base):
@@ -23,7 +23,7 @@ class Question(Base):
     type = Column(Integer, nullable=False)
     options = Column(ARRAY(String))
     survey = relationship("Survey", back_populates="questions")
-    responses = relationship("Response", back_populates="question")
+    responses = relationship("Response", back_populates="question", cascade="all, delete-orphan")
 
 
 class Response(Base):

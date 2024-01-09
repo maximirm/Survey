@@ -1,28 +1,19 @@
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import UUID
-
 from app.services.schemas import schemas
-from app.database.exceptions.survey_not_found_exception import SurveyNotFoundException
 from app.database.models import models
 
 
 def get_survey(db: Session, survey_id: UUID):
-    survey = db.query(models.Survey) \
+    return db.query(models.Survey) \
         .filter(models.Survey.id == survey_id) \
         .first()
-    if survey is None:
-        raise SurveyNotFoundException(f"Survey with ID {str(survey_id)} not found")
-    return survey
 
 
 def get_surveys_by_creator_id(db: Session, creator_id: UUID):
-    surveys = db.query(models.Survey) \
+    return db.query(models.Survey) \
         .filter(models.Survey.creator_id == creator_id) \
         .all()
-    if not surveys:
-        raise SurveyNotFoundException(f"No Surveys for Creator ID {str(creator_id)} found")
-    return surveys
 
 
 def create_survey(db: Session, survey: schemas.SurveyCreate):
@@ -34,36 +25,15 @@ def create_survey(db: Session, survey: schemas.SurveyCreate):
 
 
 def delete_survey(db: Session, survey_id: UUID):
-
-    survey = get_survey(db, survey_id)
-    if survey is None:
-        return {"error": "Survey not found"}
-    try:
-        __delete_responses_by_survey_id(db, survey_id)
-        __delete_questions_by_survey_id(db, survey_id)
-        db.delete(survey)
-        db.commit()
-        return {"message": "Survey deleted successfully"}
-    except IntegrityError as e:
-        db.rollback()
-        return {"error": "IntegrityError", "message": str(e)}
+    db_survey = db.query(models.Survey).filter(models.Survey.id == survey_id).first()
+    db.delete(db_survey)
+    db.commit()
+    return db_survey
 
 
 def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    surveys = get_surveys_by_creator_id(db, creator_id)
-    for survey in surveys:
-        delete_survey(db, survey.id)
-    return {"message": "Surveys deleted successfully"}
-
-
-def __delete_responses_by_survey_id(db: Session, survey_id: UUID):
-    db.query(models.Response) \
-        .filter(models.Response.question_id.in_(db.query(models.Question.id).filter_by(survey_id=survey_id))
-    ) \
-        .delete(synchronize_session=False)
-
-
-def __delete_questions_by_survey_id(db: Session, survey_id: UUID):
-    db.query(models.Question) \
-        .filter_by(survey_id=survey_id) \
-        .delete(synchronize_session=False)
+    db_surveys = db.query(models.Survey).filter(models.Survey.creator_id == creator_id).all()
+    for survey in db_surveys:
+        db.delete(survey)
+    db.commit()
+    return db_surveys

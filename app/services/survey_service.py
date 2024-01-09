@@ -5,12 +5,22 @@ from app.database.crud import survey_crud
 from sqlalchemy.orm import Session
 
 
+class SurveyNotFoundException(Exception):
+    pass
+
+
 def get_survey(db: Session, survey_id: UUID):
-    return survey_crud.get_survey(db, survey_id)
+    db_survey = survey_crud.get_survey(db, survey_id)
+    if db_survey is None:
+        raise SurveyNotFoundException(f"Survey with ID {str(survey_id)} not found")
+    return db_survey
 
 
 def get_surveys_by_creator_id(db: Session, creator_id: UUID):
-    return survey_crud.get_surveys_by_creator_id(db, creator_id)
+    db_surveys = survey_crud.get_surveys_by_creator_id(db, creator_id)
+    if not db_surveys:
+        raise SurveyNotFoundException(f"No Surveys for creator-ID {str(creator_id)} found")
+    return db_surveys
 
 
 def create_survey(db: Session, survey: schemas.SurveyCreate):
@@ -18,11 +28,14 @@ def create_survey(db: Session, survey: schemas.SurveyCreate):
 
 
 def delete_survey(db: Session, survey_id: UUID):
-    return survey_crud.delete_survey(db, survey_id)
+    db_survey = survey_crud.delete_survey(db, survey_id)
+    if db_survey is None:
+        raise SurveyNotFoundException(f"Survey with ID {str(survey_id)} not found")
+    return {"message": f"Survey with ID {str(survey_id)} deleted successfully"}
 
 
 def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    surveys = survey_crud.get_surveys_by_creator_id(db, creator_id)
-    for survey in surveys:
-        delete_survey(db, survey.id)
-    return {"message": "Surveys deleted successfully"}
+    db_surveys = survey_crud.delete_surveys_by_creator_id(db, creator_id)
+    if not db_surveys:
+        raise SurveyNotFoundException(f"No Surveys for creator-ID {str(creator_id)} found")
+    return {"message": f"Surveys for creator-ID {str(creator_id)} deleted successfully"}
