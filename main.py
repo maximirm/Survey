@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from controller import survey_controller, question_controller, response_controller
-from database.database import engine
-from database.models import models
+from app.controller import survey_controller, question_controller, response_controller
+from app.database.database import engine
+from app.database.models import models
 
 models.Base.metadata.create_all(bind=engine)
 

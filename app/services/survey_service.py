@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from controller.schemas import schemas
-from database.crud import survey_crud
+from app.controller.schemas import schemas
+from app.database.crud import survey_crud
 from sqlalchemy.orm import Session
 
 

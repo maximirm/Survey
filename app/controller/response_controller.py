@@ -3,9 +3,9 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from controller.schemas import schemas
-from database.database import get_db
-from services import response_service
+from app.controller.schemas import schemas
+from app.database.database import get_db
+from app.services import response_service
 
 router = APIRouter()
 

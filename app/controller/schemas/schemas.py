@@ -24,7 +24,7 @@ class QuestionBase(BaseModel):
     order: int
     question_text: str
     type: int
-    options: Optional[List[str]]
+    options: Optional[List[str]] = None
 
 
 class QuestionCreate(QuestionBase):

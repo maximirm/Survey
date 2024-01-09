@@ -1,8 +1,8 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Session
 
-from controller.schemas import schemas
-from database.models import models
+from app.controller.schemas import schemas
+from app.database.models import models
 
 
 def get_response(db: Session, response_id: UUID):

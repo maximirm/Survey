@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from controller.schemas import schemas
-from database.crud import response_crud
+from app.controller.schemas import schemas
+from app.database.crud import response_crud
 
 
 def get_response(db: Session, response_id: UUID):
