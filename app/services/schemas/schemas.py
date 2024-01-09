@@ -16,7 +16,7 @@ class Response(ResponseBase):
     id: UUID4
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class QuestionBase(BaseModel):
@@ -36,7 +36,7 @@ class Question(QuestionBase):
     responses: list[Response] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class SurveyBase(BaseModel):
@@ -54,4 +54,4 @@ class Survey(SurveyBase):
     questions: list[Question] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

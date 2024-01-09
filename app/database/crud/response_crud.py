@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Session
 
-from app.api.schemas import schemas
+from app.services.schemas import schemas
 from app.database.models import models
 
 

@@ -2,20 +2,27 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import UUID
 
-from app.api.schemas import schemas
+from app.services.schemas import schemas
+from app.database.exceptions.survey_not_found_exception import SurveyNotFoundException
 from app.database.models import models
 
 
 def get_survey(db: Session, survey_id: UUID):
-    return db.query(models.Survey) \
+    survey = db.query(models.Survey) \
         .filter(models.Survey.id == survey_id) \
         .first()
+    if survey is None:
+        raise SurveyNotFoundException(f"Survey with ID {str(survey_id)} not found")
+    return survey
 
 
 def get_surveys_by_creator_id(db: Session, creator_id: UUID):
-    return db.query(models.Survey)\
-        .filter(models.Survey.creator_id == creator_id)\
+    surveys = db.query(models.Survey) \
+        .filter(models.Survey.creator_id == creator_id) \
         .all()
+    if not surveys:
+        raise SurveyNotFoundException(f"No Surveys for Creator ID {str(creator_id)} found")
+    return surveys
 
 
 def create_survey(db: Session, survey: schemas.SurveyCreate):
@@ -27,6 +34,7 @@ def create_survey(db: Session, survey: schemas.SurveyCreate):
 
 
 def delete_survey(db: Session, survey_id: UUID):
+
     survey = get_survey(db, survey_id)
     if survey is None:
         return {"error": "Survey not found"}
@@ -49,16 +57,13 @@ def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
 
 
 def __delete_responses_by_survey_id(db: Session, survey_id: UUID):
-    db.query(models.Response)\
-        .filter(models.Response.question_id
-                .in_(db.query(models.Question.id)
-                     .filter_by(survey_id=survey_id)
-                     )
-                )\
+    db.query(models.Response) \
+        .filter(models.Response.question_id.in_(db.query(models.Question.id).filter_by(survey_id=survey_id))
+    ) \
         .delete(synchronize_session=False)
 
 
 def __delete_questions_by_survey_id(db: Session, survey_id: UUID):
-    db.query(models.Question)\
-        .filter_by(survey_id=survey_id)\
+    db.query(models.Question) \
+        .filter_by(survey_id=survey_id) \
         .delete(synchronize_session=False)

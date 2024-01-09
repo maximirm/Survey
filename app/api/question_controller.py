@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from app.api.schemas import schemas
+from app.services.schemas import schemas
 from app.database.database import get_db
 from app.services import question_service
 

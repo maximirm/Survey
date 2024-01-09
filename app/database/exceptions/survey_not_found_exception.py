@@ -1,0 +1,2 @@
+class SurveyNotFoundException(Exception):
+    pass

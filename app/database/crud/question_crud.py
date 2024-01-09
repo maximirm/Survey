@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import UUID
 
-from app.api.schemas import schemas
+from app.services.schemas import schemas
 from app.database.models import models
 
 

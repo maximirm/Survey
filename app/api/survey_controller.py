@@ -3,8 +3,9 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from app.api.schemas import schemas
+from app.services.schemas import schemas
 from app.database.database import get_db
+from app.database.exceptions.survey_not_found_exception import SurveyNotFoundException
 from app.services import survey_service
 
 router = APIRouter()
@@ -12,15 +13,18 @@ router = APIRouter()
 
 @router.get("/surveys/{survey_id}", response_model=schemas.Survey)
 def get_survey(survey_id: UUID, db: Session = Depends(get_db)):
-    db_survey = survey_service.get_survey(db, survey_id)
-    if db_survey is None:
-        raise HTTPException(status_code=404, detail="Survey not found")
-    return db_survey
+    try:
+        return survey_service.get_survey(db, survey_id)
+    except SurveyNotFoundException as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.get("/surveys/by_creator/{creator_id}", response_model=list[schemas.Survey])
 def get_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
-    return survey_service.get_surveys_by_creator_id(db, creator_id)
+    try:
+        return survey_service.get_surveys_by_creator_id(db, creator_id)
+    except SurveyNotFoundException as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.post("/surveys/", response_model=schemas.Survey)
