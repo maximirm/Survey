@@ -118,7 +118,7 @@ class TestSurveyCrud(unittest.TestCase):
         survey_create_2 = schemas.SurveyCreate(**survey_data_2)
         survey_crud.create_survey(self.db, survey_create_2)
 
-        result = survey_crud.delete_surveys_by_creator_id(self.db, creator_id)
+        result = survey_crud.delete_surveys_by_creator_id(self.db, UUID(creator_id))
 
         self.assertEqual(2, len(result))
         self.assertEqual(UUID(creator_id), result[0].creator_id)
