@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.services.exceptions.foreign_key_not_found_exception import ForeignKeyNotFoundException
 from app.services.exceptions.question_not_found_exception import QuestionNotFoundException
-from app.services.schemas import schemas
+from app.database.schemas import schemas
 from app.database.crud import question_crud
 from sqlalchemy.orm import Session
 

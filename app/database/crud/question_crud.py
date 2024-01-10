@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Session
 
 from app.database.models import models
-from app.services.schemas import schemas
+from app.database.schemas import schemas
 
 
 def get_question(db: Session, question_id: UUID):

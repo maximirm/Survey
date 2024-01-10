@@ -3,7 +3,7 @@ from uuid import UUID
 
 from app.services.exceptions.foreign_key_not_found_exception import ForeignKeyNotFoundException
 from app.services.exceptions.response_not_found_exception import ResponseNotFoundException
-from app.services.schemas import schemas
+from app.database.schemas import schemas
 from app.database.crud import response_crud
 from sqlalchemy.exc import IntegrityError
 

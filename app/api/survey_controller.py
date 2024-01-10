@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 
 from app.services.exceptions.survey_not_found_exception import SurveyNotFoundException
-from app.services.schemas import schemas
+from app.database.schemas import schemas
 from app.database.config.database import get_db
 from app.services import survey_service
 
