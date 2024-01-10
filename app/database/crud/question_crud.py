@@ -1,9 +1,8 @@
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Session
 
-from app.services.schemas import schemas
 from app.database.models import models
+from app.services.schemas import schemas
 
 
 def get_question(db: Session, question_id: UUID):
@@ -26,4 +25,17 @@ def create_question(db: Session, question: schemas.QuestionCreate):
     return db_question
 
 
+def delete_question(db: Session, question_id: UUID):
+    db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
+    db.delete(db_question)
+    db.commit()
+    return db_question
 
+
+def delete_questions_by_survey_id(db: Session, survey_id: UUID):
+    db_questions = db.query(models.Question) \
+        .filter(models.Question.survey_id == survey_id).all()
+    for question in db_questions:
+        db.delete(question)
+    db.commit()
+    return db_questions

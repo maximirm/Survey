@@ -32,7 +32,8 @@ def delete_survey(db: Session, survey_id: UUID):
 
 
 def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    db_surveys = db.query(models.Survey).filter(models.Survey.creator_id == creator_id).all()
+    db_surveys = db.query(models.Survey)\
+        .filter(models.Survey.creator_id == creator_id).all()
     for survey in db_surveys:
         db.delete(survey)
     db.commit()
