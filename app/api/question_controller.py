@@ -6,7 +6,7 @@ from uuid import UUID
 from app.services.exceptions.foreign_key_not_found_exception import ForeignKeyNotFoundException
 from app.services.exceptions.question_not_found_exception import QuestionNotFoundException
 from app.services.schemas import schemas
-from app.database.database import get_db
+from app.database.config.database import get_db
 from app.services import question_service
 
 
