@@ -26,7 +26,9 @@ def create_question(db: Session, question: schemas.QuestionCreate):
 
 
 def delete_question(db: Session, question_id: UUID):
-    db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
+    db_question = db.query(models.Question)\
+        .filter(models.Question.id == question_id)\
+        .first()
     db.delete(db_question)
     db.commit()
     return db_question
@@ -34,7 +36,8 @@ def delete_question(db: Session, question_id: UUID):
 
 def delete_questions_by_survey_id(db: Session, survey_id: UUID):
     db_questions = db.query(models.Question) \
-        .filter(models.Question.survey_id == survey_id).all()
+        .filter(models.Question.survey_id == survey_id)\
+        .all()
     for question in db_questions:
         db.delete(question)
     db.commit()

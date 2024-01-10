@@ -25,7 +25,9 @@ def create_survey(db: Session, survey: schemas.SurveyCreate):
 
 
 def delete_survey(db: Session, survey_id: UUID):
-    db_survey = db.query(models.Survey).filter(models.Survey.id == survey_id).first()
+    db_survey = db.query(models.Survey)\
+        .filter(models.Survey.id == survey_id)\
+        .first()
     db.delete(db_survey)
     db.commit()
     return db_survey
@@ -33,7 +35,8 @@ def delete_survey(db: Session, survey_id: UUID):
 
 def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
     db_surveys = db.query(models.Survey)\
-        .filter(models.Survey.creator_id == creator_id).all()
+        .filter(models.Survey.creator_id == creator_id)\
+        .all()
     for survey in db_surveys:
         db.delete(survey)
     db.commit()

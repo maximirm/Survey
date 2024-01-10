@@ -27,16 +27,16 @@ def create_response(db: Session, response: schemas.ResponseCreate):
 
 def delete_response(db: Session, response_id: UUID):
     db_response = get_response(db, response_id)
-    if db_response:
-        db.delete(db_response)
-        db.commit()
-        return db_response
+    db.delete(db_response)
+    db.commit()
+    return db_response
 
 
 def delete_responses_by_question_id(db: Session, question_id: UUID):
-    db_responses = get_responses_by_question_id(db, question_id)
-    if db_responses:
-        for db_response in db_responses:
-            db.delete(db_response)
-        db.commit()
-        return db_responses
+    db_responses = db.query(models.Response)\
+        .filter(models.Response.question_id == question_id)\
+        .all()
+    for response in db_responses:
+        db.delete(response)
+    db.commit()
+    return db_responses

@@ -1,0 +1,2 @@
+class ResponseNotFoundException(Exception):
+    pass

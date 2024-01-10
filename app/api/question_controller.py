@@ -31,7 +31,6 @@ def get_questions_by_survey_id(survey_id: UUID, db: Session = Depends(get_db)):
 
 @router.post("/questions/", response_model=schemas.Question)
 def create_question(question: schemas.QuestionCreate, db: Session = Depends(get_db)):
-
     try:
         return question_service.create_question(db, question)
     except ForeignKeyNotFoundException as e:
