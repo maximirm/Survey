@@ -5,7 +5,6 @@ from app.database.schemas import schemas
 from app.database.models import models
 
 
-
 def get_response(db: Session, response_id: UUID):
     return db.query(models.Response) \
         .filter(models.Response.id == response_id) \
@@ -34,8 +33,8 @@ def delete_response(db: Session, response_id: UUID):
 
 
 def delete_responses_by_question_id(db: Session, question_id: UUID):
-    db_responses = db.query(models.Response)\
-        .filter(models.Response.question_id == question_id)\
+    db_responses = db.query(models.Response) \
+        .filter(models.Response.question_id == question_id) \
         .all()
     for response in db_responses:
         db.delete(response)
