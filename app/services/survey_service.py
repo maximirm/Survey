@@ -5,6 +5,8 @@ from app.database.schemas import schemas
 from app.database.crud import survey_crud
 from sqlalchemy.orm import Session
 
+from app.services.utils.converter import convert_survey_model_to_schema
+
 
 def get_survey(db: Session, survey_id: UUID):
     db_survey = survey_crud.get_survey(db, survey_id)
@@ -12,7 +14,7 @@ def get_survey(db: Session, survey_id: UUID):
         raise SurveyNotFoundException(
             f"Survey with ID {str(survey_id)} not found"
         )
-    return db_survey
+    return convert_survey_model_to_schema(db_survey)
 
 
 def get_surveys_by_creator_id(db: Session, creator_id: UUID):
@@ -21,11 +23,11 @@ def get_surveys_by_creator_id(db: Session, creator_id: UUID):
         raise SurveyNotFoundException(
             f"No Surveys for creator-ID {str(creator_id)} found"
         )
-    return db_surveys
+    return [convert_survey_model_to_schema(db_survey) for db_survey in db_surveys]
 
 
 def create_survey(db: Session, survey: schemas.SurveyCreate):
-    return survey_crud.create_survey(db, survey)
+    return convert_survey_model_to_schema(survey_crud.create_survey(db, survey))
 
 
 def delete_survey(db: Session, survey_id: UUID):
