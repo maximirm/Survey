@@ -1,9 +1,11 @@
 import unittest
+from uuid import uuid4
+
 from fastapi.testclient import TestClient
-from main import app
+
 from app.database.config.database import Base, engine
 from app.database.schemas import schemas
-from uuid import uuid4
+from main import app
 
 
 class TestSurveyIntegration(unittest.TestCase):

@@ -1,14 +1,13 @@
 import unittest
 from unittest.mock import patch
+from uuid import uuid4, UUID
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from testing.postgresql import Postgresql
 
 from app.database.crud import survey_crud
 from app.database.models import models
-from uuid import uuid4, UUID
-from testing.postgresql import Postgresql
-
 from app.database.schemas import schemas
 
 

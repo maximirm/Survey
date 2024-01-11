@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import ANY
 from unittest.mock import patch, MagicMock
 from uuid import uuid4
 
@@ -7,7 +8,6 @@ from fastapi.testclient import TestClient
 from app.database.schemas import schemas
 from app.services.exceptions.survey_not_found_exception import SurveyNotFoundException
 from main import app
-from unittest.mock import ANY
 
 
 class TestSurveyController(unittest.TestCase):
