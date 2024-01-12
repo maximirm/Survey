@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from fastapi.testclient import TestClient
 
-from app.database.schemas import schemas
+from app.repository.schemas import schemas
 from app.services.exceptions.survey_not_found_exception import SurveyNotFoundException
 from main import app
 

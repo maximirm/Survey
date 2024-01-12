@@ -5,8 +5,8 @@ from uuid import UUID
 
 from app.services.exceptions.foreign_key_not_found_exception import ForeignKeyNotFoundException
 from app.services.exceptions.question_not_found_exception import QuestionNotFoundException
-from app.database.schemas import schemas
-from app.database.config.database import get_db
+from app.repository.schemas import schemas
+from app.repository.config.database import get_db
 from app.services import response_service
 
 router = APIRouter()

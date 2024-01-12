@@ -2,8 +2,8 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from app.database.data_access import survey_access
-from app.database.schemas import schemas
+from app.repository.data_access import survey_access
+from app.repository.schemas import schemas
 from app.services.exceptions.survey_not_found_exception import SurveyNotFoundException
 from app.services.utils.converter import convert_survey_model_to_schema
 

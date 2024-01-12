@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.dialects.postgresql import UUID
-from app.database.schemas import schemas
-from app.database.models import models
+from app.repository.schemas import schemas
+from app.repository.models import models
 
 
 def get_survey(db: Session, survey_id: UUID):

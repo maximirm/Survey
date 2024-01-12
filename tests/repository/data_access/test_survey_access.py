@@ -6,12 +6,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from testing.postgresql import Postgresql
 
-from app.database.data_access import survey_access
-from app.database.models import models
-from app.database.schemas import schemas
+from app.repository.data_access import survey_access
+from app.repository.models import models
+from app.repository.schemas import schemas
 
 
-class TestSurveyCrud(unittest.TestCase):
+class TestSurveyAccess(unittest.TestCase):
 
     def setUp(self):
         self.postgresql = Postgresql()
@@ -26,7 +26,7 @@ class TestSurveyCrud(unittest.TestCase):
         self.db.close()
         self.postgresql.stop()
 
-    @patch('app.database.data_access.survey_crud.get_survey',
+    @patch('app.repository.data_access.survey_access.get_survey',
            return_value={
                "id": "10000000-0000-0000-0000-000000000000",
                "creator_id": "20000000-0000-0000-0000-000000000000"
@@ -39,7 +39,7 @@ class TestSurveyCrud(unittest.TestCase):
         self.assertEqual(result, {"id": survey_id, "creator_id": creator_id})
         mock_get_survey.assert_called_once_with(self.db, survey_id)
 
-    @patch('app.database.data_access.survey_crud.get_surveys_by_creator_id',
+    @patch('app.repository.data_access.survey_access.get_surveys_by_creator_id',
            return_value=[
                models.Survey(
                    id="10000000-0000-0000-0000-000000000000",

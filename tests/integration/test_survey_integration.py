@@ -3,8 +3,8 @@ from uuid import uuid4
 
 from fastapi.testclient import TestClient
 
-from app.database.config.database import Base, engine
-from app.database.schemas import schemas
+from app.repository.config.database import Base, engine
+from app.repository.schemas import schemas
 from main import app
 
 

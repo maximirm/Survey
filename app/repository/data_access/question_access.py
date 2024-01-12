@@ -1,8 +1,8 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Session
 
-from app.database.models import models
-from app.database.schemas import schemas
+from app.repository.models import models
+from app.repository.schemas import schemas
 
 
 def get_question(db: Session, question_id: UUID):

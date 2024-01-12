@@ -1,5 +1,5 @@
-from app.database.models.models import Survey as SurveyModel, Question as QuestionModel, Response as ResponseModel
-from app.database.schemas.schemas import Survey as SurveySchema, Question as QuestionSchema, Response as ResponseSchema
+from app.repository.models.models import Survey as SurveyModel, Question as QuestionModel, Response as ResponseModel
+from app.repository.schemas.schemas import Survey as SurveySchema, Question as QuestionSchema, Response as ResponseSchema
 
 
 def convert_survey_model_to_schema(model: SurveyModel) -> SurveySchema:
