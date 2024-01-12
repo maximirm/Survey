@@ -13,37 +13,37 @@ router = APIRouter()
 
 
 @router.get("/surveys/{survey_id}", response_model=schemas.Survey)
-def get_survey(survey_id: UUID, db: Session = Depends(get_db)):
+async def get_survey(survey_id: UUID, db: Session = Depends(get_db)):
     try:
-        return survey_service.get_survey(db, survey_id)
+        return await survey_service.get_survey(db, survey_id)
     except SurveyNotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.get("/surveys/by_creator/{creator_id}", response_model=list[schemas.Survey])
-def get_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
+async def get_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
     try:
-        return survey_service.get_surveys_by_creator_id(db, creator_id)
+        return await survey_service.get_surveys_by_creator_id(db, creator_id)
     except SurveyNotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.post("/surveys/", response_model=schemas.Survey)
-def create_survey(survey: schemas.SurveyCreate, db: Session = Depends(get_db)):
-    return survey_service.create_survey(db, survey)
+async def create_survey(survey: schemas.SurveyCreate, db: Session = Depends(get_db)):
+    return await survey_service.create_survey(db, survey)
 
 
 @router.delete("/surveys/{survey_id}", response_model=dict)
-def delete_survey(survey_id: UUID, db: Session = Depends(get_db)):
+async def delete_survey(survey_id: UUID, db: Session = Depends(get_db)):
     try:
-        return survey_service.delete_survey(db, survey_id)
+        return await survey_service.delete_survey(db, survey_id)
     except SurveyNotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.delete("/surveys/by_creator/{creator_id}", response_model=dict)
-def delete_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
+async def delete_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
     try:
-        return survey_service.delete_surveys_by_creator_id(db, creator_id)
+        return await survey_service.delete_surveys_by_creator_id(db, creator_id)
     except SurveyNotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))

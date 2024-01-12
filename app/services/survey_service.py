@@ -8,8 +8,8 @@ from app.services.exceptions.survey_not_found_exception import SurveyNotFoundExc
 from app.services.utils.converter import convert_survey_model_to_schema
 
 
-def get_survey(db: Session, survey_id: UUID):
-    db_survey = survey_access.get_survey(db, survey_id)
+async def get_survey(db: Session, survey_id: UUID):
+    db_survey = await survey_access.get_survey(db, survey_id)
     if db_survey is None:
         raise SurveyNotFoundException(
             f"Survey with ID {str(survey_id)} not found"
@@ -17,8 +17,8 @@ def get_survey(db: Session, survey_id: UUID):
     return convert_survey_model_to_schema(db_survey)
 
 
-def get_surveys_by_creator_id(db: Session, creator_id: UUID):
-    db_surveys = survey_access.get_surveys_by_creator_id(db, creator_id)
+async def get_surveys_by_creator_id(db: Session, creator_id: UUID):
+    db_surveys = await survey_access.get_surveys_by_creator_id(db, creator_id)
     if not db_surveys:
         raise SurveyNotFoundException(
             f"No Surveys for creator-ID {str(creator_id)} found"
@@ -26,12 +26,12 @@ def get_surveys_by_creator_id(db: Session, creator_id: UUID):
     return [convert_survey_model_to_schema(db_survey) for db_survey in db_surveys]
 
 
-def create_survey(db: Session, survey: schemas.SurveyCreate):
-    return convert_survey_model_to_schema(survey_access.create_survey(db, survey))
+async def create_survey(db: Session, survey: schemas.SurveyCreate):
+    return await survey_access.create_survey(db, survey)
 
 
-def delete_survey(db: Session, survey_id: UUID):
-    db_survey = survey_access.delete_survey(db, survey_id)
+async def delete_survey(db: Session, survey_id: UUID):
+    db_survey = await survey_access.delete_survey(db, survey_id)
     if db_survey is None:
         raise SurveyNotFoundException(
             f"Survey with ID {str(survey_id)} not found"
@@ -39,8 +39,8 @@ def delete_survey(db: Session, survey_id: UUID):
     return {"message": f"Survey with ID {str(survey_id)} deleted successfully"}
 
 
-def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    db_surveys = survey_access.delete_surveys_by_creator_id(db, creator_id)
+async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
+    db_surveys = await survey_access.delete_surveys_by_creator_id(db, creator_id)
     if not db_surveys:
         raise SurveyNotFoundException(
             f"No Surveys for creator-ID {str(creator_id)} found"
