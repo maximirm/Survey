@@ -36,7 +36,7 @@ async def delete_survey(db: Session, survey_id: UUID):
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
     statement = select(Survey).filter(Survey.creator_id == creator_id)
     result = db.execute(statement)
-    db_surveys = await result.scalars().all()
+    db_surveys = result.scalars().all()
 
     for survey in db_surveys:
         db.delete(survey)

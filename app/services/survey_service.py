@@ -39,7 +39,6 @@ async def delete_survey(db: Session, survey_id: UUID):
             status_code=404,
             detail=f"Survey with ID {str(survey_id)} not found"
         )
-    return {"message": f"Survey with ID {str(survey_id)} deleted successfully"}
 
 
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
@@ -49,4 +48,3 @@ async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
             status_code=404,
             detail=f"No Surveys for creator-ID {str(creator_id)} found"
         )
-    return {"message": f"Surveys for creator-ID {str(creator_id)} deleted successfully"}

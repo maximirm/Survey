@@ -2,6 +2,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from starlette.responses import JSONResponse
 
 from app.repository.config.database import get_db
 from app.repository.schemas import schemas
@@ -25,11 +26,13 @@ async def create_survey(survey: schemas.SurveyCreate, db: Session = Depends(get_
     return await survey_service.create_survey(db, survey)
 
 
-@router.delete("/surveys/{survey_id}/", response_model=dict)
+@router.delete("/surveys/{survey_id}/")
 async def delete_survey(survey_id: UUID, db: Session = Depends(get_db)):
-    return await survey_service.delete_survey(db, survey_id)
+    await survey_service.delete_survey(db, survey_id)
+    return JSONResponse(content=f"Survey with ID {str(survey_id)} deleted successfully", status_code=200)
 
 
-@router.delete("/surveys/by_creator/{creator_id}/", response_model=dict)
+@router.delete("/surveys/by_creator/{creator_id}/")
 async def delete_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
-    return await survey_service.delete_surveys_by_creator_id(db, creator_id)
+    await survey_service.delete_surveys_by_creator_id(db, creator_id)
+    return JSONResponse(content=f"Surveys for creator-ID {str(creator_id)} deleted successfully", status_code=200)
