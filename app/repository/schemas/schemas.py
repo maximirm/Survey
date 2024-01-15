@@ -1,25 +1,22 @@
-from pydantic import BaseModel, UUID4
 from typing import Optional, List
 
+from pydantic import BaseModel, UUID4
 
-class ResponseBase(BaseModel):
+
+class ResponseCreate(BaseModel):
     question_id: UUID4
     respondent_id: Optional[UUID4] = None
     response_text: List[str]
 
 
-class ResponseCreate(ResponseBase):
-    pass
-
-
-class Response(ResponseBase):
+class Response(ResponseCreate):
     id: UUID4
 
     class Config:
         from_attributes = True
 
 
-class QuestionBase(BaseModel):
+class QuestionCreate(BaseModel):
     survey_id: UUID4
     order: int
     question_text: str
@@ -27,11 +24,7 @@ class QuestionBase(BaseModel):
     options: Optional[List[str]] = None
 
 
-class QuestionCreate(QuestionBase):
-    pass
-
-
-class Question(QuestionBase):
+class Question(QuestionCreate):
     id: UUID4
     responses: list[Response] = []
 
@@ -39,17 +32,13 @@ class Question(QuestionBase):
         from_attributes = True
 
 
-class SurveyBase(BaseModel):
+class SurveyCreate(BaseModel):
     creator_id: UUID4
     title: str
     description: str
 
 
-class SurveyCreate(SurveyBase):
-    pass
-
-
-class Survey(SurveyBase):
+class Survey(SurveyCreate):
     id: UUID4
     questions: list[Question] = []
 
