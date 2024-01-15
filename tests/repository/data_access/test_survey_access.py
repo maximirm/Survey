@@ -115,7 +115,7 @@ class TestSurveyAccess(unittest.TestCase):
             "description": "Description 2"
         }
         survey_create_2 = schemas.SurveyCreate(**survey_data_2)
-        survey_access.create_survey(self.db, survey_create_2)
+        await survey_access.create_survey(self.db, survey_create_2)
 
         result = survey_access.delete_surveys_by_creator_id(self.db, UUID(creator_id))
 
