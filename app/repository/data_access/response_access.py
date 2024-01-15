@@ -28,7 +28,7 @@ async def create_response(db: Session, response: schemas.ResponseCreate):
 
 async def delete_response(db: Session, response_id: UUID):
     db_response = await get_response(db, response_id)
-    if db_response :
+    if db_response:
         db.delete(db_response)
         db.commit()
         return db_response
