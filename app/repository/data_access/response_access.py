@@ -28,10 +28,11 @@ async def create_response(db: Session, response: schemas.ResponseCreate):
 
 async def delete_response(db: Session, response_id: UUID):
     db_response = await get_response(db, response_id)
-    db.delete(db_response)
-    db.commit()
-    return db_response
-
+    if db_response :
+        db.delete(db_response)
+        db.commit()
+        return db_response
+    return None
 
 async def delete_responses_by_question_id(db: Session, question_id: UUID):
     statement = select(Response).filter(Response.question_id == question_id)

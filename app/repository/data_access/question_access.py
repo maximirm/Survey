@@ -28,9 +28,12 @@ async def create_question(db: Session, question: schemas.QuestionCreate):
 
 async def delete_question(db: Session, question_id: UUID):
     db_question = await get_question(db, question_id)
-    db.delete(db_question)
-    db.commit()
-    return db_question
+
+    if db_question:
+        db.delete(db_question)
+        db.commit()
+        return db_question
+    return None
 
 
 async def delete_questions_by_survey_id(db: Session, survey_id: UUID):

@@ -28,9 +28,11 @@ async def create_survey(db: Session, survey: schemas.SurveyCreate):
 
 async def delete_survey(db: Session, survey_id: UUID):
     db_survey = await get_survey(db, survey_id)
-    db.delete(db_survey)
-    db.commit()
-    return db_survey
+    if db_survey:
+        db.delete(db_survey)
+        db.commit()
+        return db_survey
+    return None
 
 
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
