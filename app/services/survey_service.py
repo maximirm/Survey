@@ -39,9 +39,5 @@ async def delete_survey(db: Session, survey_id: UUID):
 
 
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    db_surveys = await survey_access.delete_surveys_by_creator_id(db, creator_id)
-    if not db_surveys:
-        raise HTTPException(
-            status_code=404,
-            detail=f"No Surveys for creator-ID {str(creator_id)} found"
-        )
+    return await survey_access.delete_surveys_by_creator_id(db, creator_id)
+

@@ -10,7 +10,7 @@ from app.services import survey_service
 
 router = APIRouter()
 
-#dont need delete
+
 @router.get("/surveys/{survey_id}/", response_model=schemas.Survey)
 async def get_survey(survey_id: UUID, db: Session = Depends(get_db)):
     return await survey_service.get_survey(db, survey_id)
@@ -34,5 +34,7 @@ async def delete_survey(survey_id: UUID, db: Session = Depends(get_db)):
 
 @router.delete("/surveys/by_creator/{creator_id}/")
 async def delete_surveys_by_creator_id(creator_id: UUID, db: Session = Depends(get_db)):
-    await survey_service.delete_surveys_by_creator_id(db, creator_id)
+    db_surveys = await survey_service.delete_surveys_by_creator_id(db, creator_id)
+    if db_surveys is None:
+        return JSONResponse(content=f"No Surveys for creator-ID {str(creator_id)} found", status_code=200)
     return JSONResponse(content=f"Surveys for creator-ID {str(creator_id)} deleted successfully", status_code=200)
