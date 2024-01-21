@@ -34,6 +34,7 @@ async def delete_response(db: Session, response_id: UUID):
         return db_response
     return None
 
+
 async def delete_responses_by_question_id(db: Session, question_id: UUID):
     statement = select(Response).filter(Response.question_id == question_id)
     result = db.execute(statement)

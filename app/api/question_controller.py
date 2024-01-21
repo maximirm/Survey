@@ -16,7 +16,6 @@ async def get_question(question_id: UUID, db: Session = Depends(get_db)):
     return await question_service.get_question(db, question_id)
 
 
-# dont need delete
 @router.get("/questions/by_survey/{survey_id}/", response_model=list[schemas.Question])
 async def get_questions_by_survey_id(survey_id: UUID, db: Session = Depends(get_db)):
     return await question_service.get_questions_by_survey_id(db, survey_id)
@@ -32,7 +31,6 @@ async def delete_question(question_id: UUID, db: Session = Depends(get_db)):
     return await question_service.delete_question(db, question_id)
 
 
-# dont need delete
 @router.delete("/questions/by_survey/{survey_id}/", response_model=dict)
 async def delete_questions_by_survey_id(survey_id: UUID, db: Session = Depends(get_db)):
     return await question_service.delete_questions_by_survey_id(db, survey_id)
