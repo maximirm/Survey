@@ -18,6 +18,13 @@ async def get_survey(db: Session, survey_id: UUID):
     return convert_survey_model_to_schema(db_survey)
 
 
+async def get_all_surveys(db: Session):
+    db_surveys = await survey_access.get_all_surveys(db)
+    if not db_surveys:
+        return []
+    return [convert_survey_model_to_schema(db_survey) for db_survey in db_surveys]
+
+
 async def get_surveys_by_creator_id(db: Session, creator_id: UUID):
     db_surveys = await survey_access.get_surveys_by_creator_id(db, creator_id)
     if not db_surveys:
@@ -40,4 +47,3 @@ async def delete_survey(db: Session, survey_id: UUID):
 
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
     return await survey_access.delete_surveys_by_creator_id(db, creator_id)
-

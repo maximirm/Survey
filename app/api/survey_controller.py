@@ -11,6 +11,11 @@ from app.services import survey_service
 router = APIRouter()
 
 
+@router.get("/surveys/all/", response_model=list[schemas.Survey])
+async def get_all_surveys(db: Session = Depends(get_db)):
+    return await survey_service.get_all_surveys(db)
+
+
 @router.get("/surveys/{survey_id}/", response_model=schemas.Survey)
 async def get_survey(survey_id: UUID, db: Session = Depends(get_db)):
     return await survey_service.get_survey(db, survey_id)

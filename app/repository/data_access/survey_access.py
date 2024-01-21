@@ -12,6 +12,10 @@ async def get_survey(db: Session, survey_id: UUID):
     return result.scalars().first()
 
 
+async def get_all_surveys(db: Session):
+    return db.execute(select(Survey)).scalars().all()
+
+
 async def get_surveys_by_creator_id(db: Session, creator_id: UUID):
     statement = select(Survey).filter(Survey.creator_id == creator_id)
     result = db.execute(statement)
