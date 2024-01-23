@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.repository.data_access import survey_repository
+from app.repository import survey_repository
 from app.repository.schemas import schemas
 from app.services.utils.converter import convert_survey_model_to_schema
 

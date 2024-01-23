@@ -15,7 +15,7 @@ class TestSurveyService(unittest.TestCase):
     def setUp(self):
         self.db = MagicMock()
 
-    @patch("app.repository.data_access.survey_access.get_survey")
+    @patch("app.repository.survey_repository.get_survey")
     def test_get_survey(self, mock_get_survey):
         survey_id = uuid4()
 
@@ -33,7 +33,7 @@ class TestSurveyService(unittest.TestCase):
         self.assertEqual(test_survey, result)
         mock_get_survey.assert_called_once_with(self.db, survey_id)
 
-    @patch("app.repository.data_access.survey_access.get_survey", return_value=None)
+    @patch("app.repository.survey_repository.get_survey", return_value=None)
     def test_get_survey_not_found(self, mock_get_survey):
         survey_id = uuid4()
 
@@ -41,7 +41,7 @@ class TestSurveyService(unittest.TestCase):
             asyncio.run(get_survey(self.db, survey_id))
         mock_get_survey.assert_called_once_with(self.db, survey_id)
 
-    @patch("app.repository.data_access.survey_access.get_surveys_by_creator_id")
+    @patch("app.repository.survey_repository.get_surveys_by_creator_id")
     def test_get_surveys_by_creator_id(self, mock_get_surveys_by_creator_id):
         survey_id = uuid4()
         test_survey_1 = Survey(
@@ -67,7 +67,7 @@ class TestSurveyService(unittest.TestCase):
         self.assertEqual(test_survey_2, result[1])
         mock_get_surveys_by_creator_id.assert_called_once_with(self.db, survey_id)
 
-    @patch("app.repository.data_access.survey_access.get_surveys_by_creator_id", return_value=None)
+    @patch("app.repository.survey_repository.get_surveys_by_creator_id", return_value=None)
     def test_get_surveys_by_creator_id_not_found(self, mock_get_surveys_by_creator_id):
         survey_id = uuid4()
 
@@ -75,7 +75,7 @@ class TestSurveyService(unittest.TestCase):
             asyncio.run(get_surveys_by_creator_id(self.db, survey_id))
         mock_get_surveys_by_creator_id.assert_called_once_with(self.db, survey_id)
 
-    @patch("app.repository.data_access.survey_access.create_survey")
+    @patch("app.repository.survey_repository.create_survey")
     def test_create_survey(self, mock_create_survey):
         survey_id = uuid4()
         test_survey = Survey(
@@ -92,7 +92,7 @@ class TestSurveyService(unittest.TestCase):
         self.assertEqual(test_survey, result)
         mock_create_survey.assert_called_once_with(self.db, test_survey)
 
-    @patch("app.repository.data_access.survey_access.delete_survey")
+    @patch("app.repository.survey_repository.delete_survey")
     def test_delete_survey(self, mock_delete_survey):
         survey_id = uuid4()
         mock_survey = MagicMock()
@@ -103,7 +103,7 @@ class TestSurveyService(unittest.TestCase):
         self.assertEqual(result, {"message": f"Survey with ID {str(survey_id)} deleted successfully"})
         mock_delete_survey.assert_called_once_with(self.db, survey_id)
 
-    @patch("app.repository.data_access.survey_access.delete_survey", return_value=None)
+    @patch("app.repository.survey_repository.delete_survey", return_value=None)
     def test_delete_survey_not_found(self, mock_delete_survey):
         survey_id = uuid4()
 
@@ -111,7 +111,7 @@ class TestSurveyService(unittest.TestCase):
             asyncio.run(delete_survey(self.db, survey_id))
         mock_delete_survey.assert_called_once_with(self.db, survey_id)
 
-    @patch("app.repository.data_access.survey_access.delete_surveys_by_creator_id")
+    @patch("app.repository.survey_repository.delete_surveys_by_creator_id")
     def test_delete_surveys_by_creator_id(self, mock_delete_surveys_by_creator_id):
         creator_id = uuid4()
         mock_surveys = MagicMock()
@@ -122,7 +122,7 @@ class TestSurveyService(unittest.TestCase):
         self.assertEqual(result, {"message": f"Surveys for creator-ID {str(creator_id)} deleted successfully"})
         mock_delete_surveys_by_creator_id.assert_called_once_with(self.db, creator_id)
 
-    @patch("app.repository.data_access.survey_access.delete_surveys_by_creator_id", return_value=None)
+    @patch("app.repository.survey_repository.delete_surveys_by_creator_id", return_value=None)
     def test_delete_surveys_by_creator_id_not_found(self, mock_delete_surveys_by_creator_id):
         creator_id = uuid4()
 

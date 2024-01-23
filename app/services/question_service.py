@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.repository.data_access import question_repository
+from app.repository import question_repository
 from app.repository.schemas import schemas
 from app.services.utils.converter import convert_question_model_to_schema
 

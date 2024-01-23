@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.repository.data_access import response_repository
+from app.repository import response_repository
 from app.repository.schemas import schemas
 
 
