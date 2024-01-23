@@ -12,12 +12,6 @@ async def get_question(db: Session, question_id: UUID):
     return result.scalars().first()
 
 
-async def get_questions_by_survey_id(db: Session, survey_id: UUID):
-    statement = select(Question).filter(Question.survey_id == survey_id)
-    result = db.execute(statement)
-    return result.scalars().all()
-
-
 async def create_question(db: Session, question: schemas.QuestionCreate):
     db_question = Question(**dict(question))
     db.add(db_question)
@@ -34,14 +28,3 @@ async def delete_question(db: Session, question_id: UUID):
         db.commit()
         return db_question
     return None
-
-
-async def delete_questions_by_survey_id(db: Session, survey_id: UUID):
-    statement = select(Question).filter(Question.survey_id == survey_id)
-    result = db.execute(statement)
-    db_questions = await result.scalars().all()
-
-    for question in db_questions:
-        db.delete(question)
-    db.commit()
-    return db_questions
