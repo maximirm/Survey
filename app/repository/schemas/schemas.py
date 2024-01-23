@@ -12,9 +12,6 @@ class ResponseCreate(BaseModel):
 class Response(ResponseCreate):
     id: UUID4
 
-    class Config:
-        from_attributes = True
-
 
 class QuestionCreate(BaseModel):
     survey_id: UUID4
@@ -28,9 +25,6 @@ class Question(QuestionCreate):
     id: UUID4
     responses: list[Response] = []
 
-    class Config:
-        from_attributes = True
-
 
 class SurveyCreate(BaseModel):
     creator_id: UUID4
@@ -42,5 +36,3 @@ class Survey(SurveyCreate):
     id: UUID4
     questions: list[Question] = []
 
-    class Config:
-        from_attributes = True
