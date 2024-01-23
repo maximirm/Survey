@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from testing.postgresql import Postgresql
 
-from app.repository.data_access import survey_access
+from app.repository.data_access import survey_repository
 from app.repository.models import models
 from app.repository.schemas import schemas
 
@@ -34,7 +34,7 @@ class TestSurveyAccess(unittest.TestCase):
     async def test_get_survey(self, mock_get_survey):
         survey_id = "10000000-0000-0000-0000-000000000000"
         creator_id = "20000000-0000-0000-0000-000000000000"
-        result = await survey_access.get_survey(self.db, survey_id)
+        result = await survey_repository.get_survey(self.db, survey_id)
 
         self.assertEqual(result, {"id": survey_id, "creator_id": creator_id})
         mock_get_survey.assert_called_once_with(self.db, survey_id)
@@ -55,7 +55,7 @@ class TestSurveyAccess(unittest.TestCase):
         survey_id_1 = "10000000-0000-0000-0000-000000000000"
         survey_id_2 = "11111111-0000-0000-0000-000000000000"
 
-        result = await survey_access.get_surveys_by_creator_id(self.db, creator_id)
+        result = await survey_repository.get_surveys_by_creator_id(self.db, creator_id)
 
         self.assertTrue(2, len(result))
         self.assertEqual(survey_id_1, result[0].id)
@@ -72,7 +72,7 @@ class TestSurveyAccess(unittest.TestCase):
         }
         survey_create = schemas.SurveyCreate(**survey_data)
 
-        result = await survey_access.create_survey(self.db, survey_create)
+        result = await survey_repository.create_survey(self.db, survey_create)
 
         self.assertIsInstance(result.id, UUID)
         self.assertIsInstance(result.creator_id, UUID)
@@ -88,9 +88,9 @@ class TestSurveyAccess(unittest.TestCase):
             "description": description
         }
         survey_create = schemas.SurveyCreate(**survey_data)
-        created_survey = survey_access.create_survey(self.db, survey_create)
+        created_survey = survey_repository.create_survey(self.db, survey_create)
 
-        result = await survey_access.delete_survey(self.db, created_survey.id)
+        result = await survey_repository.delete_survey(self.db, created_survey.id)
 
         self.assertEqual(created_survey.id, result.id)
         self.assertEqual(created_survey.creator_id, result.creator_id)
@@ -108,16 +108,16 @@ class TestSurveyAccess(unittest.TestCase):
             "description": "Description 1"
         }
         survey_create_1 = schemas.SurveyCreate(**survey_data_1)
-        await survey_access.create_survey(self.db, survey_create_1)
+        await survey_repository.create_survey(self.db, survey_create_1)
         survey_data_2 = {
             "creator_id": creator_id,
             "title": "Survey 2",
             "description": "Description 2"
         }
         survey_create_2 = schemas.SurveyCreate(**survey_data_2)
-        await survey_access.create_survey(self.db, survey_create_2)
+        await survey_repository.create_survey(self.db, survey_create_2)
 
-        result = survey_access.delete_surveys_by_creator_id(self.db, UUID(creator_id))
+        result = survey_repository.delete_surveys_by_creator_id(self.db, UUID(creator_id))
 
         self.assertEqual(2, len(result))
         self.assertEqual(UUID(creator_id), result[0].creator_id)

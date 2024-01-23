@@ -4,13 +4,13 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.repository.data_access import question_access
+from app.repository.data_access import question_repository
 from app.repository.schemas import schemas
 from app.services.utils.converter import convert_question_model_to_schema
 
 
 async def get_question(db: Session, question_id: UUID):
-    db_question = await question_access.get_question(db, question_id)
+    db_question = await question_repository.get_question(db, question_id)
     if db_question is None:
         raise HTTPException(
             status_code=404,
@@ -20,7 +20,7 @@ async def get_question(db: Session, question_id: UUID):
 
 
 async def get_questions_by_survey_id(db: Session, survey_id: UUID):
-    db_questions = await question_access.get_questions_by_survey_id(db, survey_id)
+    db_questions = await question_repository.get_questions_by_survey_id(db, survey_id)
     if not db_questions:
         raise HTTPException(
             status_code=404,
@@ -31,7 +31,7 @@ async def get_questions_by_survey_id(db: Session, survey_id: UUID):
 
 async def create_question(db: Session, question: schemas.QuestionCreate):
     try:
-        return await question_access.create_question(db, question)
+        return await question_repository.create_question(db, question)
     except IntegrityError:
         raise HTTPException(
             status_code=400,
@@ -40,7 +40,7 @@ async def create_question(db: Session, question: schemas.QuestionCreate):
 
 
 async def delete_question(db: Session, question_id: UUID):
-    db_question = await question_access.delete_question(db, question_id)
+    db_question = await question_repository.delete_question(db, question_id)
     if db_question is None:
         raise HTTPException(
             status_code=404,
@@ -50,7 +50,7 @@ async def delete_question(db: Session, question_id: UUID):
 
 
 async def delete_questions_by_survey_id(db: Session, survey_id: UUID):
-    db_questions = await question_access.delete_questions_by_survey_id(db, survey_id)
+    db_questions = await question_repository.delete_questions_by_survey_id(db, survey_id)
     if not db_questions:
         raise HTTPException(
             status_code=404,

@@ -3,13 +3,13 @@ from uuid import UUID
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.repository.data_access import survey_access
+from app.repository.data_access import survey_repository
 from app.repository.schemas import schemas
 from app.services.utils.converter import convert_survey_model_to_schema
 
 
 async def get_survey(db: Session, survey_id: UUID):
-    db_survey = await survey_access.get_survey(db, survey_id)
+    db_survey = await survey_repository.get_survey(db, survey_id)
     if db_survey is None:
         raise HTTPException(
             status_code=404,
@@ -19,25 +19,25 @@ async def get_survey(db: Session, survey_id: UUID):
 
 
 async def get_all_surveys(db: Session):
-    db_surveys = await survey_access.get_all_surveys(db)
+    db_surveys = await survey_repository.get_all_surveys(db)
     if not db_surveys:
         return []
     return [convert_survey_model_to_schema(db_survey) for db_survey in db_surveys]
 
 
 async def get_surveys_by_creator_id(db: Session, creator_id: UUID):
-    db_surveys = await survey_access.get_surveys_by_creator_id(db, creator_id)
+    db_surveys = await survey_repository.get_surveys_by_creator_id(db, creator_id)
     if not db_surveys:
         return []
     return [convert_survey_model_to_schema(db_survey) for db_survey in db_surveys]
 
 
 async def create_survey(db: Session, survey: schemas.SurveyCreate):
-    return await survey_access.create_survey(db, survey)
+    return await survey_repository.create_survey(db, survey)
 
 
 async def delete_survey(db: Session, survey_id: UUID):
-    db_survey = await survey_access.delete_survey(db, survey_id)
+    db_survey = await survey_repository.delete_survey(db, survey_id)
     if db_survey is None:
         raise HTTPException(
             status_code=404,
@@ -46,4 +46,4 @@ async def delete_survey(db: Session, survey_id: UUID):
 
 
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    return await survey_access.delete_surveys_by_creator_id(db, creator_id)
+    return await survey_repository.delete_surveys_by_creator_id(db, creator_id)
