@@ -31,6 +31,7 @@ class TestSurveyService(unittest.TestCase):
         result = asyncio.run(get_survey(self.db, survey_id))
 
         self.assertEqual(test_survey, result)
+        self.assertIsInstance(result, Survey)
         mock_get_survey.assert_called_once_with(self.db, survey_id)
 
     @patch("app.repository.survey_repository.get_survey", return_value=None)
