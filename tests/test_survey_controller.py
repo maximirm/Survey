@@ -113,7 +113,6 @@ class TestSurveyController(unittest.TestCase):
 
         response = self.client.delete(f"/surveys/{survey_id}")
 
-        print(response.json())
         assert response.status_code == 200
         assert response.json() == {"message": f"Survey with ID {survey_id} deleted successfully"}
         mock_delete_survey.assert_called_once_with(ANY, survey_id)
