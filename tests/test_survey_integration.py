@@ -38,7 +38,7 @@ class TestSurveyIntegration(unittest.TestCase):
         # Delete Survey
         delete_response = self.client.delete(f"/surveys/{created_survey.id}")
         assert delete_response.status_code == 200
-        assert delete_response.json() == {"message": f"Survey with ID {str(created_survey.id)} deleted successfully"}
+        assert delete_response.json() == f"Survey with ID {str(created_survey.id)} deleted successfully"
 
         # Get Survey again but expect 404
         get_deleted_response = self.client.get(f"/surveys/{created_survey.id}")

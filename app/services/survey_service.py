@@ -43,7 +43,11 @@ async def delete_survey(db: Session, survey_id: UUID):
             status_code=404,
             detail=f"Survey with ID {str(survey_id)} not found"
         )
+    return f"Survey with ID {str(survey_id)} deleted successfully"
 
 
 async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
-    return await survey_repository.delete_surveys_by_creator_id(db, creator_id)
+    db_surveys = await survey_repository.delete_surveys_by_creator_id(db, creator_id)
+    if db_surveys is None:
+        return f"No Surveys for creator-ID {str(creator_id)} found"
+    return f"Surveys for creator-ID {str(creator_id)} deleted successfully"

@@ -43,9 +43,9 @@ async def delete_surveys_by_creator_id(db: Session, creator_id: UUID):
     statement = select(Survey).filter(Survey.creator_id == creator_id)
     result = db.execute(statement)
     db_surveys = result.scalars().all()
-
-    for survey in db_surveys:
-        db.delete(survey)
-
-    db.commit()
-    return db_surveys
+    if db_surveys:
+        for survey in db_surveys:
+            db.delete(survey)
+        db.commit()
+        return db_surveys
+    return None

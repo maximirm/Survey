@@ -71,8 +71,9 @@ class TestSurveyService(unittest.TestCase):
     def test_get_surveys_by_creator_id_not_found(self, mock_get_surveys_by_creator_id):
         survey_id = uuid4()
 
-        with self.assertRaises(HTTPException):
-            asyncio.run(get_surveys_by_creator_id(self.db, survey_id))
+        result = asyncio.run(get_surveys_by_creator_id(self.db, survey_id))
+
+        self.assertEqual([], result)
         mock_get_surveys_by_creator_id.assert_called_once_with(self.db, survey_id)
 
     @patch("app.repository.survey_repository.create_survey")
@@ -100,7 +101,7 @@ class TestSurveyService(unittest.TestCase):
 
         result = asyncio.run(delete_survey(self.db, survey_id))
 
-        self.assertEqual(result, {"message": f"Survey with ID {str(survey_id)} deleted successfully"})
+        self.assertEqual(f"Survey with ID {str(survey_id)} deleted successfully", result)
         mock_delete_survey.assert_called_once_with(self.db, survey_id)
 
     @patch("app.repository.survey_repository.delete_survey", return_value=None)
@@ -119,13 +120,13 @@ class TestSurveyService(unittest.TestCase):
 
         result = asyncio.run(delete_surveys_by_creator_id(self.db, creator_id))
 
-        self.assertEqual(result, {"message": f"Surveys for creator-ID {str(creator_id)} deleted successfully"})
+        self.assertEqual(f"Surveys for creator-ID {str(creator_id)} deleted successfully", result)
         mock_delete_surveys_by_creator_id.assert_called_once_with(self.db, creator_id)
 
     @patch("app.repository.survey_repository.delete_surveys_by_creator_id", return_value=None)
     def test_delete_surveys_by_creator_id_not_found(self, mock_delete_surveys_by_creator_id):
         creator_id = uuid4()
 
-        with self.assertRaises(HTTPException):
-            asyncio.run(delete_surveys_by_creator_id(self.db, creator_id))
+        result = asyncio.run(delete_surveys_by_creator_id(self.db, creator_id))
+        self.assertEqual(result, f"No Surveys for creator-ID {str(creator_id)} found")
         mock_delete_surveys_by_creator_id.assert_called_once_with(self.db, creator_id)

@@ -109,12 +109,13 @@ class TestSurveyController(unittest.TestCase):
     @patch("app.services.survey_service.delete_survey")
     def test_delete_survey(self, mock_delete_survey):
         survey_id = uuid4()
-        mock_delete_survey.return_value = {"message": "Survey deleted successfully"}
+        mock_delete_survey.return_value = {"message": f"Survey with ID {survey_id} deleted successfully"}
 
         response = self.client.delete(f"/surveys/{survey_id}")
 
+        print(response.json())
         assert response.status_code == 200
-        assert response.json() == {"message": "Survey deleted successfully"}
+        assert response.json() == {"message": f"Survey with ID {survey_id} deleted successfully"}
         mock_delete_survey.assert_called_once_with(ANY, survey_id)
 
     @patch("app.services.survey_service.delete_survey")
@@ -131,22 +132,22 @@ class TestSurveyController(unittest.TestCase):
     @patch("app.services.survey_service.delete_surveys_by_creator_id")
     def test_delete_surveys_by_creator_id(self, mock_delete_surveys):
         creator_id = uuid4()
-        mock_delete_surveys.return_value = {"message": "Surveys deleted successfully"}
+        mock_delete_surveys.return_value = "Surveys deleted successfully"
 
         response = self.client.delete(f"/surveys/by_creator/{creator_id}")
 
         assert response.status_code == 200
-        assert response.json() == {"message": "Surveys deleted successfully"}
+        assert response.json() == "Surveys deleted successfully"
         mock_delete_surveys.assert_called_once_with(ANY, creator_id)
 
     @patch("app.services.survey_service.delete_surveys_by_creator_id")
     def test_delete_surveys_by_creator_id_not_found(self, mock_delete_surveys):
         creator_id = uuid4()
-        mock_delete_surveys.side_effect = HTTPException(status_code=404, detail="Surveys not found")
+        mock_delete_surveys.return_value = f"No Surveys for creator-ID {str(creator_id)} found"
 
         response = self.client.delete(f"/surveys/by_creator/{creator_id}")
 
-        assert response.status_code == 404
-        assert response.json() == {"detail": "Surveys not found"}
+        assert response.status_code == 200
+        assert response.json() == f"No Surveys for creator-ID {str(creator_id)} found"
 
         mock_delete_surveys.assert_called_once_with(ANY, creator_id)
