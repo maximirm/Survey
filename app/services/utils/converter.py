@@ -8,6 +8,7 @@ def convert_survey_model_to_schema(model: SurveyModel) -> SurveySchema:
         creator_id=str(model.creator_id),
         title=model.title,
         description=model.description,
+        is_public=model.is_public,
         questions=[convert_question_model_to_schema(question) for question in model.questions]
     )
 

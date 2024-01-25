@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from app.repository.config.database import Base
@@ -11,6 +11,7 @@ class Survey(Base):
     creator_id = Column(UUID(as_uuid=True), nullable=False)
     title = Column(String)
     description = Column(String)
+    is_public = Column(Boolean, default=True)
     questions = relationship("Question", back_populates="survey", cascade="all, delete-orphan")
 
 

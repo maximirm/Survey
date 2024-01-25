@@ -30,6 +30,7 @@ class SurveyCreate(BaseModel):
     creator_id: UUID4
     title: str
     description: str
+    is_public: bool
 
 
 class Survey(SurveyCreate):
