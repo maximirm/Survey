@@ -22,7 +22,8 @@ class TestSurveyController(unittest.TestCase):
             id=str(uuid4()),
             creator_id=str(survey_id),
             title="Survey Title",
-            description="Survey Description"
+            description="Survey Description",
+            is_public=False
         )
         mock_get_survey.return_value = mock_survey
 
@@ -33,6 +34,7 @@ class TestSurveyController(unittest.TestCase):
             "creator_id": mock_survey.creator_id,
             "title": mock_survey.title,
             "description": mock_survey.description,
+            "is_public": mock_survey.is_public,
             "id": mock_survey.id,
             "questions": [],
         }
@@ -53,8 +55,20 @@ class TestSurveyController(unittest.TestCase):
     def test_get_surveys_by_creator_id_success(self, mock_get_surveys):
         creator_id = uuid4()
         mock_surveys = [
-            MagicMock(id=str(uuid4()), creator_id=str(creator_id), title="Survey 1", description="Description 1"),
-            MagicMock(id=str(uuid4()), creator_id=str(creator_id), title="Survey 2", description="Description 2"),
+            MagicMock(
+                id=str(uuid4()),
+                creator_id=str(creator_id),
+                title="Survey 1",
+                description="Description 1",
+                is_public=False
+            ),
+            MagicMock(
+                id=str(uuid4()),
+                creator_id=str(creator_id),
+                title="Survey 2",
+                description="Description 2",
+                is_public=False
+            ),
         ]
         mock_get_surveys.return_value = mock_surveys
 
@@ -66,6 +80,7 @@ class TestSurveyController(unittest.TestCase):
                 "creator_id": survey.creator_id,
                 "title": survey.title,
                 "description": survey.description,
+                "is_public": False,
                 "id": survey.id,
                 "questions": [],
             }
@@ -91,6 +106,7 @@ class TestSurveyController(unittest.TestCase):
             "creator_id": str(uuid4()),
             "title": "Survey Title",
             "description": "Survey Description",
+            "is_public": False,
             "questions": [],
         }
 

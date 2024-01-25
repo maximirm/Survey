@@ -23,6 +23,7 @@ class TestSurveyIntegration(unittest.TestCase):
             "creator_id": str(uuid4()),
             "title": "Integration Test Survey",
             "description": "Integration Test Description",
+            "is_public": False,
             "questions": [],
         }
         create_response = self.client.post("/surveys/", json=survey_create_data)
