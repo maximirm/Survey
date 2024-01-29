@@ -23,11 +23,11 @@ async def get_question(question_id: UUID, db: Session = Depends(get_db)):
         400: {
             "description": "Integrity Error",
             "content": {
-                "application/json":
-                    {
-                        "example": {
-                            "detail": "Can not create Question. No Survey with ID (uuid) found"}
+                "application/json": {
+                    "example": {
+                        "detail": "Can not create Question. No Survey with ID (uuid) found"
                     }
+                }
             }
         }
     }
