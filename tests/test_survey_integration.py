@@ -2,27 +2,23 @@ import unittest
 from uuid import uuid4
 
 from fastapi.testclient import TestClient
-
-from app.repository.config.database import Base, engine
 from app.repository.schemas import schemas
 from main import app
+from tests.test_db.test_db_setup import setup_test_db
 
 
 class TestSurveyIntegration(unittest.TestCase):
 
     def setUp(self):
-        Base.metadata.create_all(bind=engine)
+        setup_test_db(app)
         self.client = TestClient(app)
-
-    def tearDown(self):
-        Base.metadata.drop_all(bind=engine)
 
     def test_survey_integration(self):
         # Create Survey
         survey_create_data = {
             "creator_id": str(uuid4()),
-            "title": "Integration Test Survey",
-            "description": "Integration Test Description",
+            "title": "Test Survey",
+            "description": "Test Description",
             "is_public": False,
             "questions": [],
         }

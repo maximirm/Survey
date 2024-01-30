@@ -8,19 +8,21 @@ from fastapi.testclient import TestClient
 
 from app.repository.schemas import schemas
 from main import app
+from tests.test_db.test_db_setup import setup_test_db
 
 
 class TestSurveyController(unittest.TestCase):
 
     def setUp(self):
+        setup_test_db(app)
         self.client = TestClient(app)
 
     @patch("app.services.survey_service.get_survey")
     def test_get_survey(self, mock_get_survey):
         survey_id = uuid4()
         mock_survey = MagicMock(
-            id=str(uuid4()),
-            creator_id=str(survey_id),
+            id=str(survey_id),
+            creator_id=str(uuid4()),
             title="Survey Title",
             description="Survey Description",
             is_public=False

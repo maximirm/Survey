@@ -11,10 +11,3 @@ app = FastAPI()
 app.include_router(survey_controller.router, tags=["Surveys"])
 app.include_router(question_controller.router, tags=["Questions"])
 app.include_router(response_controller.router, tags=["Responses"])
-
-
-
-
-
-
-
