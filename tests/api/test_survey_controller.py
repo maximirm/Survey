@@ -93,7 +93,10 @@ class TestSurveyController(unittest.TestCase):
     @patch("app.services.survey_service.get_surveys_by_creator_id")
     def test_get_surveys_by_creator_id_not_found(self, mock_get_surveys):
         creator_id = uuid4()
-        mock_get_surveys.side_effect = HTTPException(status_code=404, detail="Surveys not found")
+        mock_get_surveys.side_effect = HTTPException(
+            status_code=404,
+            detail="Surveys not found"
+        )
 
         response = self.client.get(f"/surveys/by_creator/{creator_id}")
 
@@ -109,9 +112,7 @@ class TestSurveyController(unittest.TestCase):
             "title": "Survey Title",
             "description": "Survey Description",
             "is_public": False,
-            "questions": [],
         }
-
         mock_survey = MagicMock(id=str(survey_id), **survey_create_data)
         mock_create_survey.return_value = mock_survey
 
@@ -120,6 +121,7 @@ class TestSurveyController(unittest.TestCase):
         assert response.status_code == 200
         assert response.json() == {
             "id": mock_survey.id,
+            "questions": [],
             **survey_create_data,
         }
         mock_create_survey.assert_called_once_with(ANY, schemas.SurveyCreate(**survey_create_data))
@@ -138,7 +140,10 @@ class TestSurveyController(unittest.TestCase):
     @patch("app.services.survey_service.delete_survey")
     def test_delete_survey_not_found(self, mock_delete_survey):
         survey_id = uuid4()
-        mock_delete_survey.side_effect = HTTPException(status_code=404, detail="Survey not found")
+        mock_delete_survey.side_effect = HTTPException(
+            status_code=404,
+            detail="Survey not found"
+        )
 
         response = self.client.delete(f"/surveys/{survey_id}")
 
