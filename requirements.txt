@@ -4,3 +4,4 @@ uvicorn==0.25.0
 httpx==0.26.0
 SQLAlchemy~=2.0.25
 starlette~=0.35.1
+psycopg2=2.9.9
