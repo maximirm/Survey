@@ -4,7 +4,7 @@ from app.repository.config.database import Base, get_db
 
 
 def setup_test_db(app):
-    SQLALCHEMY_DATABASE_URL = "postgresql://surveyuser:admin@localhost/surveydbtest"
+    SQLALCHEMY_DATABASE_URL = "postgresql://user:password@surveydbtest:5432/surveydbtest"
     engine = create_engine(SQLALCHEMY_DATABASE_URL, poolclass=StaticPool)
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base.metadata.create_all(bind=engine)
